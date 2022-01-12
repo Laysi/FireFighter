@@ -1,7 +1,7 @@
 library firefighter;
 
 import 'package:cloud_firestore/cloud_firestore.dart'
-    show CollectionReference, DocumentReference;
+    show CollectionReference, DocumentReference, Query;
 import 'package:reflectable/reflectable.dart';
 
 // Annotate with this class to enable reflection.
@@ -44,3 +44,14 @@ extension DocumentReferenceExtension on DocumentReference {
         toFirestore: (value, options) => to(value.toJson()),
       );
 }
+
+extension QueryExtension on Query {
+  Query<T> as<T extends FireSerializable>(
+      {JsonMapper from = defaultMapper, JsonMapper to = defaultMapper}) =>
+      withConverter<T>(
+        fromFirestore: (snapshot, options) =>
+            initializeFromJson<T>(from(snapshot.data()!)),
+        toFirestore: (value, options) => to(value.toJson()),
+      );
+}
+
