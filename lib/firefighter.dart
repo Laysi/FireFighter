@@ -1,7 +1,8 @@
 library firefighter;
 
 import 'package:cloud_firestore/cloud_firestore.dart'
-    show CollectionReference, DocumentReference, Query;
+    show CollectionReference, DocumentReference, GetOptions, Query;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:reflectable/reflectable.dart';
 
 // Annotate with this class to enable reflection.
@@ -26,32 +27,44 @@ abstract class FireSerializable {
   Map<String, dynamic> toJson();
 }
 
-extension CollectionReferenceExtension on CollectionReference {
-  CollectionReference<T> as<T extends FireSerializable>(
+extension CollectionReferenceExtension<T> on CollectionReference<T> {
+  CollectionReference<R> as<R extends FireSerializable>(
           {JsonMapper from = defaultMapper, JsonMapper to = defaultMapper}) =>
-      withConverter<T>(
+      withConverter<R>(
           fromFirestore: (snapshot, options) =>
-              initializeFromJson<T>(from(snapshot.data()!)),
+              initializeFromJson<R>(from(snapshot.data()!)),
           toFirestore: (value, options) => to(value.toJson()));
 }
 
-extension DocumentReferenceExtension on DocumentReference {
-  DocumentReference<T> as<T extends FireSerializable>(
+extension DocumentReferenceExtension<T> on DocumentReference<T> {
+  DocumentReference<R> as<R extends FireSerializable>(
           {JsonMapper from = defaultMapper, JsonMapper to = defaultMapper}) =>
-      withConverter<T>(
+      withConverter<R>(
         fromFirestore: (snapshot, options) =>
-            initializeFromJson<T>(from(snapshot.data()!)),
+            initializeFromJson<R>(from(snapshot.data()!)),
         toFirestore: (value, options) => to(value.toJson()),
       );
+
+  Future<DocumentSnapshot<T>> getCacheFirst() async {
+    try {
+      return await get(const GetOptions(source: Source.cache));
+    } on FirebaseException {
+      return await get();
+    }
+  }
+
+  Future<DocumentSnapshot<R>> getAs<R extends FireSerializable>(
+      [GetOptions? options]) async {
+    return as<R>().get(options);
+  }
 }
 
 extension QueryExtension on Query {
   Query<T> as<T extends FireSerializable>(
-      {JsonMapper from = defaultMapper, JsonMapper to = defaultMapper}) =>
+          {JsonMapper from = defaultMapper, JsonMapper to = defaultMapper}) =>
       withConverter<T>(
         fromFirestore: (snapshot, options) =>
             initializeFromJson<T>(from(snapshot.data()!)),
         toFirestore: (value, options) => to(value.toJson()),
       );
 }
-
