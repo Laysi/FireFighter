@@ -15,6 +15,9 @@ dependencies:
 
   cloud_firestore: ^3.5.1
   firefighter_annotation:
+    git:
+      url: https://github.com/Laysi/FireFighter.git
+      path: packages/firefighter_annotation
 
 dev_dependencies:
   flutter_test:
