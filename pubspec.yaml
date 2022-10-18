@@ -12,8 +12,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cloud_firestore: ^3.1.5
-  reflectable: ^3.0.4
+
+  cloud_firestore: ^3.5.1
+  reflectable: ^4.0.0
 
 dev_dependencies:
   flutter_test:

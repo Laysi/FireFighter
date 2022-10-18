@@ -30,3 +30,5 @@ build/
 
 
 *.reflectable.dart
+.flutter-plugins
+.flutter-plugins-dependencies
