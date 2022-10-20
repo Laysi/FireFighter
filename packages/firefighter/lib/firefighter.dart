@@ -34,7 +34,7 @@ extension DocumentReferenceExtension<T> on DocumentReference<T> {
     return as<R>().get(options);
   }
 
-  setAs<R extends FireSerializable>(R data, [SetOptions? options]){
+  Future<void> setAs<R extends FireSerializable>(R data, [SetOptions? options]){
     return as<R>().set(data,options);
   }
 }
