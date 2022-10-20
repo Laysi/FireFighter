@@ -33,6 +33,10 @@ extension DocumentReferenceExtension<T> on DocumentReference<T> {
       [GetOptions? options]) async {
     return as<R>().get(options);
   }
+
+  setAs<R extends FireSerializable>(R data, [SetOptions? options]){
+    return as<R>().set(data,options);
+  }
 }
 
 extension QueryExtension on Query {
