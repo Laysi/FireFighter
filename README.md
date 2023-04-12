@@ -37,3 +37,41 @@ const like = 'sample';
 TODO: Tell users more about the package: where to find more information, how to 
 contribute to the package, how to file issues, what response they can expect 
 from the package authors, and more.
+
+- add *.reflectable.dart to gitignore
+- import 'main.reflectable.dart' in main entrypoint
+- dart run build_runner build
+TODO: add use example for these example;
+```dart
+import 'package:firefighter/firefighter.dart';
+
+@fireData
+class User implements FireSerializable {
+  final String uid;
+  final String name;
+  final String email;
+
+  
+  const User({
+    required this.uid,
+    required this.name,
+    required this.email,
+  });
+
+  
+  @override
+  Map<String, dynamic> toJson() => {
+    "uid": uid,
+    "name": name,
+    "email": email,
+  };
+
+  factory User.fromJson(Map<String, dynamic> data) {
+    return User(
+      uid: data['uid'],
+      name: data['name'],
+      email: data['email'],
+    );
+  }
+}
+```

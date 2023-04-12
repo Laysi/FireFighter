@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cloud_firestore: ^3.5.1
+  cloud_firestore: ^4.5.0
   firefighter_annotation:
     git:
       url: https://github.com/Laysi/FireFighter.git
